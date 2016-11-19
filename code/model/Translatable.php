@@ -1155,6 +1155,11 @@ class Translatable extends DataExtension implements PermissionProvider {
 		// used in LeftAndMain->init() to set language state when reading/writing record
 		$fields->push(new HiddenField("Locale", "Locale", $this->owner->Locale));
 		
+		//ensures New DataObjects in a Gridfield have the correct Locale applied 
+		if($this->owner->ID == 0 && !($this->owner instanceof SiteTree)) {
+                    $this->owner->Locale = self::get_current_locale();
+                }
+		
 		// Don't apply these modifications for normal DataObjects - they rely on CMSMain logic
 		if(!class_exists('SiteTree')) return;
 		if(!($this->owner instanceof SiteTree)) return;
